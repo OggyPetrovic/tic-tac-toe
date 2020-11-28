@@ -13,6 +13,8 @@
 
 # IDE files
 *.code-workspace
+launch.json
+.eslintcache
 
 # misc
 .DS_Store
