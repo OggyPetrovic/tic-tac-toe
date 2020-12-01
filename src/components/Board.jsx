@@ -6,14 +6,23 @@ export default class Board extends React.Component {
     super(props);
     this.state = {
       squares: Array(9).fill(null),
+      xIsNext: true,
     };
   }
 
   handleClick(i) {
-    const { squares } = this.state;
+    const { squares, xIsNext } = this.state;
     const squaresClone = [...squares];
-    squaresClone[i] = 'X';
-    this.setState({ squares: squaresClone });
+    squaresClone[i] = this.nextPlayer();
+    this.setState({
+      squares: squaresClone,
+      xIsNext: !xIsNext,
+    });
+  }
+
+  nextPlayer() {
+    const { xIsNext } = this.state;
+    return xIsNext ? 'X' : 'O';
   }
 
   renderSquare(i) {
@@ -22,7 +31,7 @@ export default class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: X';
+    const status = `Next player: ${this.nextPlayer()}`;
 
     return (
       <div>
