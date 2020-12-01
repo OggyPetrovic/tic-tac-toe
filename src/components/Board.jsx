@@ -2,10 +2,23 @@ import React from 'react';
 import Square from './Square';
 
 export default class Board extends React.Component {
-  // temporary fix
-  // eslint-disable-next-line class-methods-use-this
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null),
+    };
+  }
+
+  handleClick(i) {
+    const { squares } = this.state;
+    const squaresClone = [...squares];
+    squaresClone[i] = 'X';
+    this.setState({ squares: squaresClone });
+  }
+
   renderSquare(i) {
-    return <Square value={i} />;
+    const { squares } = this.state;
+    return <Square value={squares[i]} onClick={() => this.handleClick(i)} />;
   }
 
   render() {
