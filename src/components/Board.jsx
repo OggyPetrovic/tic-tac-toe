@@ -92,7 +92,7 @@ export default class Board extends React.Component {
       xIsNext,
     } = this.state;
 
-    if (winner) {
+    if (winner || squares[i]) {
       return;
     }
 
