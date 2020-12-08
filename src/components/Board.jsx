@@ -78,9 +78,9 @@ export default class Board extends React.Component {
     const { dimension } = props;
     this.state = {
       dimension,
+      nextPlayer: 'X',
       squares: Array(dimension * dimension).fill(null),
       winner: null,
-      xIsNext: true,
     };
   }
 
@@ -89,7 +89,7 @@ export default class Board extends React.Component {
       dimension,
       squares,
       winner,
-      xIsNext,
+      nextPlayer,
     } = this.state;
 
     if (winner || squares[i]) {
@@ -97,19 +97,14 @@ export default class Board extends React.Component {
     }
 
     const squaresUpdate = [...squares];
-    squaresUpdate[i] = this.nextPlayer();
+    squaresUpdate[i] = nextPlayer;
     const winnerUpdate = findWinner(squaresUpdate, dimension);
 
     this.setState({
       squares: squaresUpdate,
       winner: winnerUpdate,
-      xIsNext: !xIsNext,
+      nextPlayer: nextPlayer === 'X' ? 'O' : 'X',
     });
-  }
-
-  nextPlayer() {
-    const { xIsNext } = this.state;
-    return xIsNext ? 'X' : 'O';
   }
 
   renderSquare(i) {
@@ -127,11 +122,11 @@ export default class Board extends React.Component {
   }
 
   render() {
-    const { dimension, winner } = this.state;
+    const { dimension, nextPlayer, winner } = this.state;
 
     const status = winner
       ? `The winner is: ${winner}`
-      : `Next player: ${this.nextPlayer()}`;
+      : `Next player: ${nextPlayer}`;
 
     const rows = Array(dimension);
     for (let i = 0; i < dimension; i += 1) {
