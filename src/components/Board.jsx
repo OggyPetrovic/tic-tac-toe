@@ -79,16 +79,30 @@ export default class Board extends React.Component {
     this.state = {
       dimension,
       squares: Array(dimension * dimension).fill(null),
+      winner: null,
       xIsNext: true,
     };
   }
 
   handleClick(i) {
-    const { squares, xIsNext } = this.state;
-    const squaresClone = [...squares];
-    squaresClone[i] = this.nextPlayer();
+    const {
+      dimension,
+      squares,
+      winner,
+      xIsNext,
+    } = this.state;
+
+    if (winner) {
+      return;
+    }
+
+    const squaresUpdate = [...squares];
+    squaresUpdate[i] = this.nextPlayer();
+    const winnerUpdate = findWinner(squaresUpdate, dimension);
+
     this.setState({
-      squares: squaresClone,
+      squares: squaresUpdate,
+      winner: winnerUpdate,
       xIsNext: !xIsNext,
     });
   }
@@ -113,9 +127,8 @@ export default class Board extends React.Component {
   }
 
   render() {
-    const { dimension, squares } = this.state;
+    const { dimension, winner } = this.state;
 
-    const winner = findWinner(squares, dimension);
     const status = winner
       ? `The winner is: ${winner}`
       : `Next player: ${this.nextPlayer()}`;
